@@ -1,39 +1,38 @@
-import {
-  FaUsers,
-  FaDatabase,
-  FaTags,
-  FaShoppingBag,
-  FaShoppingBasket,
-} from 'react-icons/fa';
-import NavItem from './NavItem';
+import { FaUsers, FaDatabase, FaTags, FaShoppingBag } from 'react-icons/fa';
+import Link from 'next/link';
+import AdminNavItem from './NavItem';
 
-export default function SideNav() {
+export default function AdminSideNav() {
   return (
     <div className="stick top-0 h-screen w-[300px] bg-dark_blue text-white space-y-12">
-      <h1 className="text-3xl bg-light_blue text-center p-6 uppercase font-bold">
+      <h1 className="text-2xl bg-light_blue text-center p-6 uppercase font-bold">
         Daily Market
       </h1>
       <nav className="flex flex-col justify-center">
-        <NavItem
-          text="Database"
-          icon={<FaDatabase />}
-        />
-        <NavItem
-          text="Users"
-          icon={<FaUsers />}
-        />
-        <NavItem
-          text="Brands"
-          icon={<FaShoppingBag />}
-        />
-        <NavItem
-          text="Products"
-          icon={<FaShoppingBasket />}
-        />
-        <NavItem
-          text="Types"
-          icon={<FaTags />}
-        />
+        <Link href="/admin">
+          <AdminNavItem
+            text="Database"
+            icon={<FaDatabase />}
+          />
+        </Link>
+        <Link href="/admin/users">
+          <AdminNavItem
+            text="Users"
+            icon={<FaUsers />}
+          />
+        </Link>
+        <Link href="/admin/brands">
+          <AdminNavItem
+            text="Brands"
+            icon={<FaShoppingBag />}
+          />
+        </Link>
+        <Link href="/admin/tags">
+          <AdminNavItem
+            text="Tags"
+            icon={<FaTags />}
+          />
+        </Link>
       </nav>
     </div>
   );

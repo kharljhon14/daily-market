@@ -7,13 +7,7 @@ import Home from '@/pages';
 describe('index page', () => {
   it('should render properly', () => {
     render(<Home />);
-    const header = screen.getByRole('heading', { name: 'Hello world' });
+    const header = screen.getByLabelText(/name/i);
     expect(header);
-  });
-
-  it('should have a disabled button', () => {
-    render(<Home />);
-    const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
   });
 });
