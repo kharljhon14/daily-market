@@ -1,3 +1,31 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "endOfLine": "auto",
+        "singleAttributePerLine": true
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/require-default-props": "off",
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "linebreak-style": ["error", "windows"],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off"
+  }
 }
