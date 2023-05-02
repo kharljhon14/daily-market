@@ -12,10 +12,9 @@ export default function Table({ columns, data, actions }: Props<any>) {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <InputField
-          placeholder="Search"
-          classNames="w-1/2"
-        />
+        <div className="w-1/2">
+          <InputField placeholder="Search" />
+        </div>
         {actions}
       </div>
       <table className="border-collapse w-full shadow-md border">
@@ -32,18 +31,31 @@ export default function Table({ columns, data, actions }: Props<any>) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, idx) => (
-            <tr className={`${idx % 2 !== 0 ? 'bg-light_grey' : ''}`}>
-              {columns.map((col) => {
-                if (col.accessor === 'actions' || col.render)
-                  return (
-                    <td className="p-3">{col.render && col.render(row)}</td>
-                  );
+          {data.length > 0 ? (
+            data.map((row, idx) => (
+              <tr className={`${idx % 2 !== 0 ? 'bg-light_grey' : ''}`}>
+                {columns.map((col) => {
+                  if (col.accessor === 'actions' || col.render)
+                    return (
+                      <td className="p-3">{col.render && col.render(row)}</td>
+                    );
 
-                return <td className="p-3">{row[col.accessor]}</td>;
-              })}
+                  return <td className="p-3">{row[col.accessor]}</td>;
+                })}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className="p-3 h-60 text-center"
+              >
+                <h1 className="text-2xl uppercase text-dark_blue">
+                  Table is empty
+                </h1>
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

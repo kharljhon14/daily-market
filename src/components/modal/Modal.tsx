@@ -7,9 +7,10 @@ interface Props {
   open?: boolean;
   close: () => void;
   children?: ReactNode | ReactNode[];
+  footer?: ReactNode | ReactNode[];
 }
 
-export default function Modal({ title, open, close, children }: Props) {
+export default function Modal({ title, open, close, children, footer }: Props) {
   return (
     <div
       className={`${
@@ -26,9 +27,9 @@ export default function Modal({ title, open, close, children }: Props) {
         <div
           className={`flex items-center ${
             title ? 'justify-between' : 'justify-end'
-          } w-full`}
+          } w-full mb-6`}
         >
-          <h1 className="text-xl text-dark_blue font-semibold">{title}</h1>
+          <h1 className="text-2xl text-dark_blue font-semibold">{title}</h1>
           <button
             onClick={close}
             type="button"
@@ -37,8 +38,8 @@ export default function Modal({ title, open, close, children }: Props) {
             <AiOutlineClose />
           </button>
         </div>
-
         {children}
+        <div className="mt-6">{footer}</div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import Table from '@/components/admin/table/Table';
 import Button from '@/components/button/Button';
 import Modal from '@/components/modal/Modal';
+import BrandForm from '@/features/admin/brands/BrandForm';
 import useModal from '@/hooks/useModal';
 import AdminLayout from '@/layouts/admin/AdminLayout';
 import { TableColumn } from '@/types/table';
@@ -24,21 +25,6 @@ export default function AdminPage() {
     },
   ];
 
-  const testData = [
-    {
-      name: 'Hello',
-    },
-    {
-      name: 'Hello1',
-    },
-    {
-      name: 'Hello2',
-    },
-    {
-      name: 'Hello3',
-    },
-  ];
-
   const { open, handleClose, handleOpen } = useModal();
 
   return (
@@ -47,11 +33,12 @@ export default function AdminPage() {
         title="Add Brand"
         open={open}
         close={handleClose}
-      />
-
+      >
+        <BrandForm close={handleClose} />
+      </Modal>
       <Table
         columns={columns}
-        data={testData}
+        data={[]}
         actions={
           <div>
             <Button onClick={handleOpen}>Add Brand</Button>

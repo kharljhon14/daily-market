@@ -2,12 +2,16 @@ import classnames from 'classnames';
 import { HTMLInputTypeAttribute } from 'react';
 
 interface Props {
+  label?: string;
+  name?: string;
   placeholder?: string;
   classNames?: string;
   type?: Extract<HTMLInputTypeAttribute, 'search' | 'text' | 'number'>;
 }
 
 export default function InputField({
+  label,
+  name,
   placeholder,
   classNames,
   type = 'text',
@@ -17,10 +21,20 @@ export default function InputField({
   const combinedStyles = classnames(baseStyle, classNames);
 
   return (
-    <input
-      className={combinedStyles}
-      type={type}
-      placeholder={placeholder}
-    />
+    <div className="flex w-full flex-col">
+      <label
+        className="text-dark_blue text-lg font-semibold"
+        htmlFor={name}
+      >
+        {label}
+      </label>
+      <input
+        id={name}
+        name={name}
+        className={combinedStyles}
+        type={type}
+        placeholder={placeholder}
+      />
+    </div>
   );
 }
