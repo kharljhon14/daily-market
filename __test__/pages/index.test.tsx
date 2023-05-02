@@ -7,7 +7,7 @@ import Home from '@/pages';
 describe('index page', () => {
   it('should render properly', () => {
     render(<Home />);
-    const header = screen.getByLabelText(/name/i);
+    const header = screen.getByText('Hello');
     expect(header);
   });
 });

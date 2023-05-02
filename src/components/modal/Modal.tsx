@@ -1,61 +1,44 @@
 import { AiOutlineClose } from 'react-icons/ai';
-import { useState } from 'react';
-import InputField from '../input/Input';
-import Button from '../button/Button';
 
-export default function Modal() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [openContent, setOpenContent] = useState(true);
+import { ReactNode } from 'react';
 
-  const handleClose = () => {
-    setOpenContent(false);
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 500);
-  };
-  const handleOpen = () => {
-    setOpenContent(true);
-    setTimeout(() => {
-      setIsOpen(true);
-    }, 500);
-  };
+interface Props {
+  title?: string | ReactNode;
+  open?: boolean;
+  close: () => void;
+  children?: ReactNode | ReactNode[];
+}
 
+export default function Modal({ title, open, close, children }: Props) {
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 ${
-        isOpen ? 'flex' : 'hidden'
-      } items-center justify-center`}
+      className={`${
+        open ? 'scale-100' : 'scale-0'
+      } fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center ${
+        open ? 'delay-0' : 'delay-300'
+      }`}
     >
-      <Button
-        onClick={handleOpen}
-        type="button"
-      >
-        test
-      </Button>
       <div
-        className="bg-white max-h-[90vh] p-4 rounded-md max-w-[50rem] w-full shadow-md overflow-hidden transition-all duration-500"
-        style={{
-          scale: openContent ? '1' : '0',
-        }}
+        className={`${
+          open ? 'scale-100' : 'scale-0'
+        } bg-white max-h-[90vh] p-4 rounded-md max-w-[50rem] w-full shadow-md overflow-hidden transition-all duration-300`}
       >
-        <button
-          onClick={handleClose}
-          type="button"
-          className="float-right text-3xl text-dark_blue"
+        <div
+          className={`flex items-center ${
+            title ? 'justify-between' : 'justify-end'
+          } w-full`}
         >
-          <AiOutlineClose />
-        </button>
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
-        <InputField />
+          <h1 className="text-xl text-dark_blue font-semibold">{title}</h1>
+          <button
+            onClick={close}
+            type="button"
+            className="text-3xl text-dark_blue"
+          >
+            <AiOutlineClose />
+          </button>
+        </div>
+
+        {children}
       </div>
     </div>
   );
