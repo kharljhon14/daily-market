@@ -1,5 +1,6 @@
 import Table from '@/components/admin/table/Table';
 import Button from '@/components/button/Button';
+import Modal from '@/components/modal/Modal';
 import AdminLayout from '@/layouts/admin/AdminLayout';
 import { TableColumn } from '@/types/table';
 
@@ -39,13 +40,15 @@ export default function AdminPage() {
 
   return (
     <AdminLayout>
-      <div className="flex justify-between mb-6">
-        <Button buttonType="secondary">Add Brand</Button>
-        <Button>Add Brand</Button>
-      </div>
+      <Modal />
       <Table
         columns={columns}
         data={testData}
+        actions={
+          <div className="">
+            <Button>Add Brand</Button>
+          </div>
+        }
       />
     </AdminLayout>
   );
