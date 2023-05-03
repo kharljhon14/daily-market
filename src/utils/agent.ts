@@ -15,6 +15,7 @@ const requests = {
 const brand = {
   getAll: () => requests.get('admin/brands'),
   create: (body: BrandSchemaType) => requests.post('admin/brands', body),
+  delete: (id: string) => requests.delete(`admin/brands/${id}`),
 };
 
 const agent = {

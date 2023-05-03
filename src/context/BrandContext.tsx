@@ -1,4 +1,4 @@
-import { BrandSchemaType } from '@/schemas/admin/brand';
+import { BrandResponseType } from '@/types/brand';
 import {
   PropsWithChildren,
   createContext,
@@ -8,8 +8,9 @@ import {
 } from 'react';
 
 interface BrandContextValue {
-  brands: BrandSchemaType[];
-  set: (brands: BrandSchemaType[]) => void;
+  brands: BrandResponseType[];
+  set: (brands: BrandResponseType[]) => void;
+  deleteBrand: (id: string) => void;
 }
 
 export const BrandContext = createContext<BrandContextValue | undefined>(
@@ -25,16 +26,31 @@ export function useBrandContext() {
 }
 
 export function BrandProvider({ children }: PropsWithChildren<any>) {
-  const [brands, setBrands] = useState<BrandSchemaType[]>([]);
+  const [brands, setBrands] = useState<BrandResponseType[]>([]);
 
-  const set = (value: BrandSchemaType[]) => {
+  const set = (value: BrandResponseType[]) => {
     setBrands(value);
+  };
+
+  const deleteBrand = (id: string) => {
+    if (brands.length <= 0) return;
+
+    // const items = [...brands];
+    // const itemIndex = items.findIndex((i) => i._id === id);
+    // items.splice(itemIndex, 1);
+
+    // if (itemIndex >= 0) {
+    //   setBrands(items);
+    // }
+
+    setBrands((prev) => prev.filter((brand) => brand._id !== id));
   };
 
   const values = useMemo(
     () => ({
       brands,
       set,
+      deleteBrand,
     }),
     [brands]
   );

@@ -26,6 +26,7 @@
     "@typescript-eslint/comma-dangle": "off",
     "linebreak-style": ["error", "windows"],
     "react/react-in-jsx-scope": "off",
-    "react/jsx-uses-react": "off"
+    "react/jsx-uses-react": "off",
+    "no-underscore-dangle": "off"
   }
 }
