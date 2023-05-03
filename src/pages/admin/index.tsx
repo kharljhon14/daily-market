@@ -1,10 +1,12 @@
 import Table from '@/components/admin/table/Table';
 import Button from '@/components/button/Button';
-import Modal from '@/components/modal/Modal';
 import BrandForm from '@/features/admin/brands/BrandForm';
 import useModal from '@/hooks/useModal';
 import AdminLayout from '@/layouts/admin/AdminLayout';
+import { BrandSchemaType } from '@/schemas/admin/brand';
 import { TableColumn } from '@/types/table';
+import agent from '@/utils/agent';
+import { useEffect, useState } from 'react';
 
 export default function AdminPage() {
   const columns: TableColumn<any>[] = [
@@ -24,21 +26,29 @@ export default function AdminPage() {
       ),
     },
   ];
-
   const { open, handleClose, handleOpen } = useModal();
+
+  const [brands, setBrands] = useState<BrandSchemaType[]>([]);
+
+  useEffect(() => {
+    const getBrands = async () => {
+      const { data } = await agent.brand.getAll();
+
+      setBrands(data);
+    };
+
+    getBrands();
+  }, []);
 
   return (
     <AdminLayout>
-      <Modal
-        title="Add Brand"
-        open={open}
+      <BrandForm
         close={handleClose}
-      >
-        <BrandForm close={handleClose} />
-      </Modal>
+        open={open}
+      />
       <Table
         columns={columns}
-        data={[]}
+        data={brands}
         actions={
           <div>
             <Button onClick={handleOpen}>Add Brand</Button>

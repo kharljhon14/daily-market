@@ -13,16 +13,19 @@ export default function Table({ columns, data, actions }: Props<any>) {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div className="w-1/2">
-          <InputField placeholder="Search" />
+          {/* <InputField
+            name="search"
+            placeholder="Search"
+          /> */}
         </div>
         {actions}
       </div>
-      <table className="border-collapse w-full shadow-md border">
-        <thead>
+      <table className="border-collapse w-full shadow-md">
+        <thead className="">
           <tr className="text-left text-dark_blue uppercase border-b-2">
             {columns.map((col) => (
               <th
-                className="p-5"
+                className="p-3 bg-dark_blue text-white"
                 key={col.label}
               >
                 {col.label}
