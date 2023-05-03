@@ -6,9 +6,15 @@ interface Props<T> {
   columns: TableColumn<T>[];
   data: T[];
   actions?: ReactNode | ReactNode[];
+  rowId?: string;
 }
 
-export default function Table({ columns, data, actions }: Props<any>) {
+export default function Table({
+  columns,
+  data,
+  actions,
+  rowId = '',
+}: Props<any>) {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -36,14 +42,29 @@ export default function Table({ columns, data, actions }: Props<any>) {
         <tbody>
           {data.length > 0 ? (
             data.map((row, idx) => (
-              <tr className={`${idx % 2 !== 0 ? 'bg-light_grey' : ''}`}>
+              <tr
+                key={row[rowId]}
+                className={`${idx % 2 !== 0 ? 'bg-light_grey' : ''}`}
+              >
                 {columns.map((col) => {
                   if (col.accessor === 'actions' || col.render)
                     return (
-                      <td className="p-3">{col.render && col.render(row)}</td>
+                      <td
+                        key={row[rowId] + row[col.accessor]}
+                        className="p-3"
+                      >
+                        {col.render && col.render(row)}
+                      </td>
                     );
 
-                  return <td className="p-3">{row[col.accessor]}</td>;
+                  return (
+                    <td
+                      key={row[rowId] + row[col.accessor]}
+                      className="p-3"
+                    >
+                      {row[col.accessor]}
+                    </td>
+                  );
                 })}
               </tr>
             ))

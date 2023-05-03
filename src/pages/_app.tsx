@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
         hideProgressBar
         newestOnTop={false}
@@ -19,6 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
         pauseOnHover={false}
         theme="light"
       />
+
       <Component {...pageProps} />
     </>
   );

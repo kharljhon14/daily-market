@@ -9,6 +9,7 @@ import Modal from '@/components/modal/Modal';
 import agent from '@/utils/agent';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { useBrandContext } from '@/context/BrandContext';
 
 interface Props {
   close: () => void;
@@ -16,11 +17,13 @@ interface Props {
 }
 
 export default function BrandForm({ close, open }: Props) {
+  const { set } = useBrandContext();
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<BrandSchemaType>({ resolver: zodResolver(BrandSchema) });
 
   const onClose = () => {
@@ -34,6 +37,8 @@ export default function BrandForm({ close, open }: Props) {
         .create(values)
         .catch((err) => toast.error(err));
       toast.success(message);
+
+      await agent.brand.getAll().then(({ data }) => set(data));
       onClose();
     } catch (err) {
       if (err instanceof AxiosError) toast.error(err.message);
@@ -56,12 +61,16 @@ export default function BrandForm({ close, open }: Props) {
             name="name"
             register={register}
             error={errors.name?.message}
+            disabled={isSubmitting}
+            loading={isSubmitting}
           />
           <Textarea
             label="Description"
             name="description"
             register={register}
             error={errors.description?.message}
+            disabled={isSubmitting}
+            loading={isSubmitting}
           />
         </div>
         <div className="flex justify-between">
