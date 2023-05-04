@@ -13,7 +13,7 @@ const requests = {
 };
 
 const brand = {
-  getAll: () => requests.get('admin/brands'),
+  getAll: () => requests.get('admin/brands?keyword=goo'),
   create: (body: BrandSchemaType) => requests.post('admin/brands', body),
   update: (id: string, body: BrandSchemaType) =>
     requests.put(`admin/brands/${id}`, body),

@@ -4,7 +4,7 @@ import AdminNavItem from './NavItem';
 
 export default function AdminSideNav() {
   return (
-    <div className="stick top-0 h-screen w-[15rem] bg-dark_blue text-white space-y-12 overflow-hidden">
+    <div className="sticky top-0 h-screen w-[15rem] bg-dark_blue text-white space-y-12 overflow-hidden">
       <h1 className="text-2xl bg-light_blue text-center p-6 uppercase font-bold">
         Daily Market
       </h1>

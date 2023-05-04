@@ -9,7 +9,7 @@ export default function AdminLayout({ children }: Props) {
   return (
     <div className="flex">
       <AdminSideNav />
-      <div className="flex-1 p-16">{children}</div>
+      <div className="flex-1 p-16 min-h-screen">{children}</div>
     </div>
   );
 }
