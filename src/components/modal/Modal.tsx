@@ -30,9 +30,10 @@ export default function Modal({
       }`}
     >
       <div
-        className={`${open ? 'scale-100' : 'scale-0'} ${
-          width ? `max-w-[${width}]` : 'max-w-[50rem]'
-        } bg-white max-h-[90vh] p-4 rounded-md  w-full shadow-md overflow-hidden transition-all duration-300`}
+        className={`${
+          open ? 'scale-100' : 'scale-0'
+        }  bg-white max-h-[90vh] p-4 rounded-md  w-full shadow-md overflow-hidden transition-all duration-300`}
+        style={{ maxWidth: width || '50rem' }}
       >
         <div
           className={`flex items-center ${

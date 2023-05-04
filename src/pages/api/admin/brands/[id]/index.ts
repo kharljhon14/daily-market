@@ -10,6 +10,30 @@ export default async function brandHandler(
   const { id } = req.query;
 
   switch (method) {
+    case 'PUT':
+      try {
+        await connectDB();
+
+        const { name, description } = req.body;
+
+        const brand = await Brand.findByIdAndUpdate(
+          id,
+          { name, description },
+          { new: true }
+        );
+
+        if (!brand) return res.status(400).json({ message: 'Invalid id' });
+
+        return res
+          .status(200)
+          .json({ data: brand, message: 'Successfuly updated brand' });
+      } catch (err) {
+        if (err instanceof Error)
+          return res.status(500).json({ message: err.message });
+      }
+
+      break;
+
     case 'DELETE':
       try {
         await connectDB();

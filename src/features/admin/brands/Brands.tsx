@@ -12,10 +12,11 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Brands() {
-  const { brands, set, deleteBrand } = useBrandContext();
+  const { brands, selectedBrand, set, setSelectedBrandToEdit, deleteBrand } =
+    useBrandContext();
   const { open, handleClose, handleOpen } = useModal();
 
-  const handleDeleleteBrand = async (id: string) => {
+  const handleDeleteBrand = async (id: string) => {
     try {
       const { message } = await agent.brand
         .delete(id)
@@ -26,6 +27,11 @@ export default function Brands() {
     } catch (err) {
       if (err instanceof Error) toast.error(err.message);
     }
+  };
+
+  const handleUpdateBrand = (brand: BrandResponseType) => {
+    setSelectedBrandToEdit(brand);
+    handleOpen();
   };
 
   const columns: TableColumn<any>[] = [
@@ -40,7 +46,7 @@ export default function Brands() {
         <div className="flex space-x-2">
           <Button>View</Button>
           <Button
-            onClick={() => console.log(props)}
+            onClick={() => handleUpdateBrand(props)}
             buttonType="secondary"
           >
             Edit
@@ -48,7 +54,7 @@ export default function Brands() {
           <DeleteModal
             deleteBy={props._id}
             name={props.name}
-            deleteFunction={handleDeleleteBrand}
+            deleteFunction={handleDeleteBrand}
           />
         </div>
       ),
@@ -58,7 +64,6 @@ export default function Brands() {
   useEffect(() => {
     const getBrands = async () => {
       const { data } = await agent.brand.getAll();
-
       set(data);
     };
     getBrands();
@@ -69,6 +74,7 @@ export default function Brands() {
       <BrandForm
         close={handleClose}
         open={open}
+        brandToEdit={selectedBrand}
       />
 
       <Table

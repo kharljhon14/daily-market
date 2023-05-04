@@ -9,8 +9,11 @@ import {
 
 interface BrandContextValue {
   brands: BrandResponseType[];
+  selectedBrand: BrandResponseType | undefined;
   set: (brands: BrandResponseType[]) => void;
+  setSelectedBrandToEdit: (brand: BrandResponseType | undefined) => void;
   addBrand: (brand: BrandResponseType) => void;
+  updateBrand: (brand: BrandResponseType) => void;
   deleteBrand: (id: string) => void;
 }
 
@@ -28,13 +31,29 @@ export function useBrandContext() {
 
 export function BrandProvider({ children }: PropsWithChildren<any>) {
   const [brands, setBrands] = useState<BrandResponseType[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<BrandResponseType>();
 
   const set = (value: BrandResponseType[]) => {
     setBrands(value);
   };
 
+  const setSelectedBrandToEdit = (
+    selectedBrandToUpdate?: BrandResponseType
+  ) => {
+    setSelectedBrand(selectedBrandToUpdate);
+  };
+
   const addBrand = (newBrand: BrandResponseType) => {
     setBrands([...brands, newBrand]);
+  };
+
+  const updateBrand = (brandToUpdate: BrandResponseType) => {
+    setBrands((prev) =>
+      prev.map((brand) => {
+        if (brand._id === brandToUpdate._id) return brandToUpdate;
+        return brand;
+      })
+    );
   };
 
   const deleteBrand = (id: string) => {
@@ -54,11 +73,14 @@ export function BrandProvider({ children }: PropsWithChildren<any>) {
   const values = useMemo(
     () => ({
       brands,
+      selectedBrand,
       set,
+      setSelectedBrandToEdit,
       addBrand,
+      updateBrand,
       deleteBrand,
     }),
-    [brands]
+    [brands, selectedBrand]
   );
 
   return (

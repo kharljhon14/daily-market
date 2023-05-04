@@ -12,41 +12,67 @@ import { toast } from 'react-toastify';
 import { useBrandContext } from '@/context/BrandContext';
 import { AxiosError } from 'axios';
 
+import { useEffect } from 'react';
+import { BrandResponseType } from '@/types/brand';
+
 interface Props {
   close: () => void;
   open: boolean;
+  brandToEdit?: BrandResponseType;
 }
 
-export default function BrandForm({ close, open }: Props) {
-  const { addBrand } = useBrandContext();
+export default function BrandForm({ close, open, brandToEdit }: Props) {
+  const { selectedBrand, addBrand, updateBrand, setSelectedBrandToEdit } =
+    useBrandContext();
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<BrandSchemaType>({ resolver: zodResolver(BrandSchema) });
+  } = useForm<BrandResponseType>({ resolver: zodResolver(BrandSchema) });
 
   const onClose = () => {
     close();
     reset();
+    if (selectedBrand) setSelectedBrandToEdit(undefined);
   };
 
   const onSubmit: SubmitHandler<BrandSchemaType> = async (values) => {
     try {
-      await agent.brand
-        .create(values)
-        .then(({ data, message }) => {
-          toast.success(message);
-          addBrand(data);
-        })
-        .catch((err) => toast.error(err.response.data.message));
-
-      onClose();
+      if (brandToEdit) {
+        await agent.brand
+          .update(brandToEdit._id, values)
+          .then(({ data, message }) => {
+            toast.success(message);
+            updateBrand(data);
+            onClose();
+          })
+          .catch((err) => toast.error(err.response.data.message));
+      } else {
+        await agent.brand
+          .create(values)
+          .then(({ data, message }) => {
+            toast.success(message);
+            addBrand(data);
+            onClose();
+          })
+          .catch((err) => toast.error(err.response.data.message));
+      }
     } catch (err) {
       if (err instanceof AxiosError) toast.error(err?.response?.data.message);
     }
   };
+
+  useEffect(() => {
+    if (brandToEdit) {
+      Object.keys(brandToEdit).forEach((key) => {
+        const fieldName = key as keyof typeof brandToEdit;
+        setValue(fieldName, brandToEdit[fieldName]);
+      });
+    }
+  }, [brandToEdit]);
 
   return (
     <Modal
