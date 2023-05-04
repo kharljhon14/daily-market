@@ -37,6 +37,10 @@ export default async function brandsHandler(
 
         if (!name) return res.status(400).json({ message: 'Name is required' });
 
+        const foundBrand = await Brand.findOne({ name });
+        if (foundBrand)
+          return res.status(400).json({ message: 'Brand already exists' });
+
         const newBrand = new Brand({ name, description });
 
         await newBrand.save();

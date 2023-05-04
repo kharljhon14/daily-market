@@ -8,9 +8,19 @@ interface Props {
   close: () => void;
   children?: ReactNode | ReactNode[];
   footer?: ReactNode | ReactNode[];
+  loading?: boolean;
+  width?: string;
 }
 
-export default function Modal({ title, open, close, children, footer }: Props) {
+export default function Modal({
+  title,
+  open,
+  close,
+  children,
+  footer,
+  width,
+  loading,
+}: Props) {
   return (
     <div
       className={`${
@@ -20,9 +30,9 @@ export default function Modal({ title, open, close, children, footer }: Props) {
       }`}
     >
       <div
-        className={`${
-          open ? 'scale-100' : 'scale-0'
-        } bg-white max-h-[90vh] p-4 rounded-md max-w-[50rem] w-full shadow-md overflow-hidden transition-all duration-300`}
+        className={`${open ? 'scale-100' : 'scale-0'} ${
+          width ? `max-w-[${width}]` : 'max-w-[50rem]'
+        } bg-white max-h-[90vh] p-4 rounded-md  w-full shadow-md overflow-hidden transition-all duration-300`}
       >
         <div
           className={`flex items-center ${
@@ -34,6 +44,7 @@ export default function Modal({ title, open, close, children, footer }: Props) {
             onClick={close}
             type="button"
             className="text-3xl text-dark_blue"
+            disabled={loading}
           >
             <AiOutlineClose />
           </button>

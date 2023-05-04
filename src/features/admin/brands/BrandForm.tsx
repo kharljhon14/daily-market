@@ -7,9 +7,10 @@ import Textarea from '@/components/textarea/Textarea';
 import { BrandSchema, BrandSchemaType } from '@/schemas/admin/brand';
 import Modal from '@/components/modal/Modal';
 import agent from '@/utils/agent';
-import { AxiosError } from 'axios';
+
 import { toast } from 'react-toastify';
 import { useBrandContext } from '@/context/BrandContext';
+import { AxiosError } from 'axios';
 
 interface Props {
   close: () => void;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export default function BrandForm({ close, open }: Props) {
-  const { set } = useBrandContext();
+  const { addBrand } = useBrandContext();
 
   const {
     register,
@@ -33,15 +34,17 @@ export default function BrandForm({ close, open }: Props) {
 
   const onSubmit: SubmitHandler<BrandSchemaType> = async (values) => {
     try {
-      const { message } = await agent.brand
+      await agent.brand
         .create(values)
-        .catch((err) => toast.error(err));
-      toast.success(message);
+        .then(({ data, message }) => {
+          toast.success(message);
+          addBrand(data);
+        })
+        .catch((err) => toast.error(err.response.data.message));
 
-      await agent.brand.getAll().then(({ data }) => set(data));
       onClose();
     } catch (err) {
-      if (err instanceof AxiosError) toast.error(err.message);
+      if (err instanceof AxiosError) toast.error(err?.response?.data.message);
     }
   };
 
@@ -50,6 +53,7 @@ export default function BrandForm({ close, open }: Props) {
       title="Add Brand"
       open={open}
       close={onClose}
+      loading={isSubmitting}
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -78,10 +82,16 @@ export default function BrandForm({ close, open }: Props) {
             onClick={onClose}
             type="button"
             buttonType="secondary"
+            loading={isSubmitting}
           >
             Cancel
           </Button>
-          <Button type="submit">Save</Button>
+          <Button
+            type="submit"
+            loading={isSubmitting}
+          >
+            Save
+          </Button>
         </div>
       </form>
     </Modal>

@@ -10,6 +10,7 @@ import {
 interface BrandContextValue {
   brands: BrandResponseType[];
   set: (brands: BrandResponseType[]) => void;
+  addBrand: (brand: BrandResponseType) => void;
   deleteBrand: (id: string) => void;
 }
 
@@ -32,6 +33,10 @@ export function BrandProvider({ children }: PropsWithChildren<any>) {
     setBrands(value);
   };
 
+  const addBrand = (newBrand: BrandResponseType) => {
+    setBrands([...brands, newBrand]);
+  };
+
   const deleteBrand = (id: string) => {
     if (brands.length <= 0) return;
 
@@ -50,6 +55,7 @@ export function BrandProvider({ children }: PropsWithChildren<any>) {
     () => ({
       brands,
       set,
+      addBrand,
       deleteBrand,
     }),
     [brands]
