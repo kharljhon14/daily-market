@@ -27,7 +27,7 @@ export default function Button({
 }: Props) {
   return (
     <button
-      className={`min-w-[5rem] p-2 rounded uppercase font-semibold duration-200 ${buttonStyles[buttonType]} disabled:cursor-progress disabled:opacity-50`}
+      className={`min-w-[2rem] p-2 rounded uppercase font-semibold duration-200 ${buttonStyles[buttonType]} disabled:cursor-progress disabled:opacity-50`}
       onClick={onClick}
       // eslint-disable-next-line react/button-has-type
       type={type}

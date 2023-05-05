@@ -6,14 +6,18 @@ import BrandForm from '@/features/admin/brands/BrandForm';
 import useModal from '@/hooks/useModal';
 import AdminLayout from '@/layouts/admin/AdminLayout';
 import { BrandResponseType } from '@/types/brand';
+import { PaginationHeaderResponse, PaginationType } from '@/types/pagination';
 import { TableColumn } from '@/types/table';
 import agent from '@/utils/agent';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Brands() {
   const { brands, selectedBrand, set, setSelectedBrandToEdit, deleteBrand } =
     useBrandContext();
+
+  const [paginationResponse, setPaginationResponse] =
+    useState<PaginationHeaderResponse>({ currentPage: 1, totalPages: 1 });
   const { open, handleClose, handleOpen } = useModal();
 
   const handleDeleteBrand = async (id: string) => {
@@ -60,12 +64,14 @@ export default function Brands() {
       ),
     },
   ];
+  const getBrands = async (params?: PaginationType) => {
+    const { data, pagination } = await agent.brand.getAll(params);
+    set(data.data);
+
+    setPaginationResponse(pagination);
+  };
 
   useEffect(() => {
-    const getBrands = async () => {
-      const { data } = await agent.brand.getAll();
-      set(data);
-    };
     getBrands();
   }, []);
 
@@ -86,6 +92,9 @@ export default function Brands() {
             <Button onClick={handleOpen}>Add Brand</Button>
           </div>
         }
+        onSearch={getBrands}
+        onChange={getBrands}
+        paginationResponse={paginationResponse}
       />
     </AdminLayout>
   );

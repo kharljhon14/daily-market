@@ -25,14 +25,14 @@ export default function Modal({
     <div
       className={`${
         open ? 'scale-100' : 'scale-0'
-      } fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center ${
+      } fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 ${
         open ? 'delay-0' : 'delay-300'
       }`}
     >
       <div
         className={`${
           open ? 'scale-100' : 'scale-0'
-        }  bg-white max-h-[90vh] p-4 rounded-md  w-full shadow-md overflow-hidden transition-all duration-300`}
+        }  bg-white max-h-[90vh] p-4 rounded-md  w-full shadow-md overflow-hidden transition-all duration-300 `}
         style={{ maxWidth: width || '50rem' }}
       >
         <div

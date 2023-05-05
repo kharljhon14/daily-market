@@ -30,12 +30,12 @@ export default async function brandsHandler(
             .json({ message: 'Something went wrong fetching brands!' });
 
         const totalCount = keyword
-          ? brands.length
+          ? await Brand.countDocuments({
+              name: { $regex: keyword, $options: 'i' },
+            })
           : await Brand.countDocuments();
 
-        const totalPages = keyword
-          ? Math.ceil(brands.length / PAGE_SIZE)
-          : Math.ceil(totalCount / PAGE_SIZE);
+        const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
         res.setHeader(
           'X-Pagination',

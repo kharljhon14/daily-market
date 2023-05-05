@@ -1,12 +1,23 @@
+import Button from '@/components/button/Button';
 import InputField from '@/components/input/Input';
+import { SearchSchema, SearchSchemaType } from '@/schemas/admin/search';
+import { PaginationHeaderResponse, PaginationType } from '@/types/pagination';
 import { TableColumn } from '@/types/table';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import PaginationComponent from '@/components/common/Pagination';
 
 interface Props<T> {
   columns: TableColumn<T>[];
   data: T[];
   actions?: ReactNode | ReactNode[];
   rowId?: string;
+  onSearch?: (pagination: PaginationType) => Promise<void>;
+  paginationResponse?: PaginationHeaderResponse;
+  onChange: (pagination: PaginationType) => void;
 }
 
 export default function Table({
@@ -14,15 +25,40 @@ export default function Table({
   data,
   actions,
   rowId = '',
+  onSearch,
+  onChange,
+  paginationResponse,
 }: Props<any>) {
+  const { register, handleSubmit, getValues } = useForm<SearchSchemaType>({
+    resolver: zodResolver(SearchSchema),
+  });
+
+  const onSubmit: SubmitHandler<SearchSchemaType> = async ({ keyword }) => {
+    try {
+      if (onSearch) await onSearch({ keyword });
+    } catch (err) {
+      if (err instanceof AxiosError) toast.error(err?.response?.data.message);
+    }
+  };
+
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div className="w-1/2">
-          {/* <InputField
-            name="search"
-            placeholder="Search"
-          /> */}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex items-center justify-between space-x-2"
+          >
+            <div className="flex-1">
+              <InputField
+                name="keyword"
+                placeholder="Search"
+                register={register}
+              />
+            </div>
+
+            <Button type="submit">Search</Button>
+          </form>
         </div>
         {actions}
       </div>
@@ -82,6 +118,12 @@ export default function Table({
           )}
         </tbody>
       </table>
+
+      <PaginationComponent
+        onChange={onChange}
+        keyword={getValues('keyword')}
+        pagination={paginationResponse}
+      />
     </div>
   );
 }
